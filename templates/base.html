@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+  <head>
+    <title>Buganda Social</title>
+    <!--<link rel="stylesheet" type="text/css" href="{% static "links/css/main.css" %}" />-->
+    <link rel="stylesheet" type="text/css" href="{% static "links/css/bootstrap.min.css" %}" />
+    <script src="{% static "links/js/jquery.min.js" %}"></script>
+    <script src="{% static "links/js/vote.js" %}"></script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'home' %}">Buganda Social</a>
+        </div>
+
+        {% block nav %}
+        {% endblock %}
+
+        </div>
+
+      
+    </nav>
+    
+    <hl />
+
+    <div class="container">
+      <div class="jumbotron">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    
+    <footer></footer>
+
+    <script src="{% static "links/js/bootstrap.min.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  </body>
+</html>

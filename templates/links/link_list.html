@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load comments %}
+
+{% block nav %}
+
+	<div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'profile' slug=user.username %}">
+                  <b>{{ user.username }}</b>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'link_create' %}">Submit Link</a> 
+              </li> 
+              <li>
+                <a href="{% url 'logout' %}">Logout</a>
+              </li> 
+            {% else %}
+              <li>
+                <a href="{% url 'registration_register' %}">Register</a>
+              </li> 
+              <li>
+                <a href="{% url 'login' %}">Login</a>
+              </li> 
+            {% endif %}
+          </ul>
+        </div>
+
+{% endblock %}
+
+{% block content %}
+
+	{% if is_paginated %}
+		<ol start="{{ page_obj.start_index }}">
+	{% else %}
+		<ol>
+	{% endif %}
+
+	<table>
+		<script>jQuery('textarea'.css())</script>
+		{% for link in object_list %}
+
+			<tr>
+				<form method="post" action="{% url 'vote' %}" class="vote_form">
+					<li> [{{ link.votes }}]
+						{% csrf_token %}
+						<input type="hidden" id="id_link" name="link" class="hidden_id" value="{{link.pk}}" />
+						<input type="hidden" id="id_voter" name="voter" class="hidden_id" value="{{user.pk}}" />
+						
+						{% if not user.is_authenticated %}
+							<button disabled title="Please login to vote"></button>
+						{% elif link.pk not in voted %}
+							<button>+</button>
+						{% else %}
+							<button>-</button>
+						{% endif %}
+
+						<a href="{% url 'link_detail' pk=link.pk %}">
+							<b>{{ link.title }}</b>
+						</a>
+					</li>    	
+				</form>
+			</tr>
+			<tr>  
+			    {% get_comment_count for link as comment_count %}
+			    {{ comment_count }} comment{{ comment_count|pluralize }}
+		    </tr>
+		{% endfor %}
+	</table>
+
+	</ol>
+
+	{% if is_paginated %}
+		<div class="pagination">
+			{% if page_obj.has_next %}
+		    	<a href="?page={{ page_obj.next_page_number }}">More &raquo;</a>
+		    {% endif %}
+		</div>
+	{% endif %}
+
+	<blockquote style="background-color: #ddd; padding: 4px; border-radius: 10px; margin: 10px 0; color: #666; font-size: smaller; text-shadow: rgba(255,255,255,0.8) 1px 1px 0;">
+	{{ randomquip.comment|truncatechars:140 }}
+	</blockquote>
+
+{% endblock %}

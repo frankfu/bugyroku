@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block nav %}
+
+	<div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'profile' slug=user.username %}">
+                  <b>{{ user.username }}</b>
+                </a>
+              </li>
+              <li class="active">
+                <a href="{% url 'link_create' %}">Submit Link</a> 
+              </li> 
+              <li>
+                <a href="{% url 'logout' %}">Logout</a>
+              </li> 
+            {% else %}
+              <li>
+                <a href="{% url 'registration_register' %}">Register</a>
+              </li> 
+              <li>
+                <a href="{% url 'login' %}">Login</a>
+              </li> 
+            {% endif %}
+          </ul>
+        </div>
+
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action="">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Add">
+</form>
+{% endblock %}
