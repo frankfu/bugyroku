@@ -1,9 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required as auth
 from django.contrib import admin
+from django.conf import settings
 from links.views import *
 
 urlpatterns = patterns('',
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.STATIC_ROOT}),
     url(r'^$', LinkListView.as_view(), name='home'),
     url(r'^users/(?P<slug>\w+)/$', UserProfileDetailView.as_view(), name='profile'),
     url(r'^edit_profile/$', auth(UserProfileEditView.as_view()), name="edit_profile"),
