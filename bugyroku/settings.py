@@ -27,6 +27,11 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+TEMPLATE_DIRS = (
+	os.path.join(BASE_DIR, 'templates'),
+)
+
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
@@ -68,16 +73,11 @@ WSGI_APPLICATION = 'bugyroku.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresq;_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',  # Or path to database file if using sqlite3.
-        'USER': '',  # Not used with sqlite3.
-        'PASSWORD': '',  # Not used with sqlite3.
-        'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     }
 }
 
 import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='sqlite://db/sqlite3.db')
+DATABASES['default'] = dj_database_url.config(default='//postgres:password@localhost/bugyroku')
 
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
@@ -102,7 +102,7 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-	os.path.join(BASE_DIR, 'static')
+	os.path.join(BASE_DIR, 'static'),
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
